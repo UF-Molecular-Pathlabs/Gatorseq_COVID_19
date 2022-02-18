@@ -1,0 +1,11 @@
+The Aptima® SARS-CoV-2 assay is a nucleic acid amplification in vitro diagnostic test (as sensitive as PCR) intended for the qualitative detection of RNA from SARS-CoV-2 isolated and purified from nasopharyngeal (NP), nasal, mid-turbinate and oropharyngeal (OP) swab specimens, nasopharyngeal wash/ aspirate or nasal aspirates obtained from individuals meeting COVID-19 clinical and/or epidemiological criteria.
+Saliva samples have also been validated using this method however, sensitivity may be reduced as compared to other collection sites.
+The SARS-CoV-2 RNA is generally detectable in saliva specimens during the acute phase of infection.
+The Aptima SARS-CoV-2 assay is for use only under Emergency Use Authorization (EUA) in the US laboratories certified under the Clinical Laboratory Improvement Amendments of 1988 (CLIA), 42 U.S.C. §263a, to perform high complexity tests.
+The assay was validated to allow for pooled sample testing. Results are for the identification of SARS-CoV-2 RNA.
+The SARS-CoV-2 RNA is generally detectable in upper respiratory specimens during the acute phase of infection.
+Positive results are indicative of the presence of SARS-CoV-2 RNA, clinical correlation with patient history and other diagnostic information is necessary to determine patient infection status.
+Positive results do not rule out bacterial infection or co-infection with other viruses. Negative results do not preclude SARS-CoV-2 infection and should not be used as the sole basis for patient management decisions.
+Negative results must be combined with clinical observations, patient history, and epidemiological information.
+The results of this test are not intended to be used as the sole means for clinical diagnosis and/ or patient management decisions.
+UFHealth PathLabs is authorized under Clinical Laboratory Improvement Amendments (CLIA) to perform high-complexity testing. Testing performed at UF Health PathLabs 4800 SW 35th Drive, Gainesville, FL 32608.
