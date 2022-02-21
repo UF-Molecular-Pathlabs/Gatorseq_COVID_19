@@ -326,7 +326,7 @@ def checkIncomingHl7(sampleDict, commentsDict, excelFile):
 
                 # search for messageId in the sampleDict
                 #if messageId == "100047187": #100047166  100047187
-                if messageId in sampleDict or plm[0] in sampleDict:
+                if messageId in sampleDict or str(plm[0]) in sampleDict:
                    # print("--------found----------")
                     methodology_code = ""
                     if sampleDict.get(messageId) is not None:
