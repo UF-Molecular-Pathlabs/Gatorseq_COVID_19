@@ -70,12 +70,8 @@ if CODE_ENV == "DevEnv":
 
 
 def check_folders_exist():
-    #if not os.path.isfile(GATOR_SEQ_SAMPLE_INPUT_FILE):
-        #sys.exit("ERROR: Does not have access to following folder: " + GATOR_SEQ_SAMPLE_INPUT_FILE + "\n") 
-
     if not os.path.isdir(MIRTH_GATORSEQ):
         sys.exit("ERROR: Does not have access to following folder: " + MIRTH_GATORSEQ + "\n") 
-
     if not os.path.isdir(COVID_19_TEST_INPUT_FOLDER):
         sys.exit("ERROR: Does not have access to following folder: " + COVID_19_TEST_INPUT_FOLDER + "\n") 
 
@@ -201,7 +197,6 @@ def updateRowInDatabase(sample, PLMO, MRN, ptName, ptSex, ptAge, ordDept, excelF
     cur = SQL_CONNECTION.cursor()
 
     updateSql = "UPDATE "+ COVID_19_EPIC_UPLOAD_TABLE +" set PLMO_Number= %s, MRN = %s, PATIENT_NAME = %s, PATIENT_SEX = %s, PATIENT_AGE = %s, ORDERING_DEPARTMENT = %s, EPIC_UPLOAD_TIMESTAMP = %s WHERE CONTAINER_ID = %s and SOURCE_EXCEL_FILE = %s;"
-    #print(sample.completeSampleName, type(sample.name), "!!!!!!",(sample.name, PLMO, get_current_formatted_date(), sample.nCoV_N1, sample.nCoV_N2, sample.nCoV_N3, sample.RP, sample.result))
     cur.execute(updateSql, (PLMO[0], MRN, ptName, ptSex, ptAge, ordDept, str(datetime.datetime.now().strftime("%m/%d/%Y %H:%M:%S")), sample.name, excelFileName))
     SQL_CONNECTION.commit()
     cur.close()
@@ -214,8 +209,6 @@ def addRowInDatabase(sample, PLMO, MRN, ptName, ptSex, ptAge, ordDept, excelFile
     findsql = "SELECT * from " + COVID_19_EPIC_UPLOAD_TABLE + " where CONTAINER_ID = %s and SOURCE_EXCEL_FILE = %s;"
     cur.execute(findsql, (sample.name, excelFileName))
     rows = cur.fetchall()
-    # print(rows)
-    # print("-----------------")
     if len(rows) > 0:
         updateSql = "UPDATE " + COVID_19_EPIC_UPLOAD_TABLE + " set QUANTSTUDIO_SPECIMEN_ID = %s, 2019nCoV_N1 = %s, 2019nCoV_N2 = %s, 2019nCoV_N3 = %s, RP = %s, RESULT = %s where CONTAINER_ID = %s and SOURCE_EXCEL_FILE = %s;" 
         cur.execute(updateSql, (sample.completeSampleName, sample.nCoV_N1, sample.nCoV_N2, sample.nCoV_N3, sample.RP, sample.result, sample.name, excelFileName))
@@ -250,10 +243,8 @@ def writeDataToExcel(excelName):
             sampleMapDf.at[index, "UPLOADED_TO_EPIC"] = "Yes"
     
     try:
-        # xldf.to_excel(RESULT_LOG , index=False)
         with pd.ExcelWriter(RESULT_LOG) as writer:
             xldf.to_excel(writer, index=False, sheet_name='Sheet 1')
-            #sampleMapDf.to_excel(writer, index=False, sheet_name='Sheet 2')
         print("done writeToExcel method and writing done to -->", RESULT_LOG )
     except:
         print("unable to save status excel, please close it")
@@ -325,9 +316,7 @@ def checkIncomingHl7(sampleDict, commentsDict, excelFile):
 
 
                 # search for messageId in the sampleDict
-                #if messageId == "100047187": #100047166  100047187
                 if messageId in sampleDict or str(plm[0]) in sampleDict:
-                   # print("--------found----------")
                     methodology_code = ""
                     if sampleDict.get(messageId) is not None:
                         givenSample =  sampleDict.get(messageId)
@@ -335,13 +324,11 @@ def checkIncomingHl7(sampleDict, commentsDict, excelFile):
                     else:
                         givenSample = sampleDict.get(plm[0])
                         methodology_code = commentsDict[plm[0]]
-                    #print("processing hl7 input file: ", hl7_file_name)                   
                     newHl7.update_msh_segment()
                     newHl7.update_orc_segment()
                     newHl7.update_obr_segment()
                     newHl7.update_obx_segment()
                     if methodology_code:
-                        #print("comments for {} = {}".format(givenSample.name, methodology_code.upper()))
                         newHl7.update_comments(open(comment_files[methodology_code.upper()], mode="r",  encoding='utf-8').read())
                     else:
                         print("Methodology is empty to assign comments for: ",givenSample.name)
@@ -564,10 +551,6 @@ if __name__ == "__main__":
         xldf = pd.read_excel(eachExcel)
         samplesUpload = toUploadSamples[f]
         updateComments = toUpdateComments[f]
-        #xldf = xldf_full.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
-        # generate sample dictionary in below format:
-        # {<sample name>: <Class Sample>}
-        #print(xldf.head())  
         for index, row in xldf.iterrows():
             sampleName = str(row["CONTAINER_ID"])
             if sampleName in samplesUpload.keys() and samplesUpload[sampleName].lower() == "yes":
@@ -586,7 +569,7 @@ if __name__ == "__main__":
                     sampleDict[sampleName] = Sample(sampleName, str(row["Sample Name"]))
                 if targetName == "RP":# and not math.isnan(value):
                     setattr(sampleDict[sampleName], "%s" % targetName, value)
-                else:# not math.isnan(value):
+                else:
                     #ToDO: is there any better of deriving 'nCoV_N1' from '2019nCoV_N1'? (python does not allow variable names to start with number)
                     setattr(sampleDict[sampleName], "%s" % targetName[4:], value)
 
@@ -611,7 +594,7 @@ if __name__ == "__main__":
             if all([not isFloatValue(sample.nCoV_N1, None), not isFloatValue(sample.nCoV_N2, None)]):
                 sample.result = "Not Detected"
             '''            
-            if all([isFloatValue(sample.nCoV_N1, 40)]): #, isFloatValue(sample.nCoV_N3, None)]):
+            if all([isFloatValue(sample.nCoV_N1, 40)]):
                 sample.result = "Detected"
                 continue
             elif any([not isFloatValue(sample.nCoV_N1, 40)]) and not all([not isFloatValue(sample.nCoV_N1, 40)]):
@@ -627,16 +610,10 @@ if __name__ == "__main__":
             
             if sample.result is None:
                 print("------ Last resort reached -----", sample)
-                #del sampleDict[sampleName]
                 sample.result = "Invalid"
-        #print("below is the dictionary of all samples:")
-        #print(sampleDict["PLMO20-000129"])
-        #print(updateComments)
         if sampleDict:
             addSampleDictToDatabase(sampleDict, f)
             checkIncomingHl7(sampleDict, updateComments, f)
             writeDataToExcel(f)  
-            #addSampleDictToExcel(sampleDict, f, True) 
         
-    #writeDataToExcel("/ext/path/DRL/Molecular/COVID19/COVID_19_QuantStudio/ProdEnv/Results/2020-03-20 203810_QuantStudio_export_UPDATED_CONTAINER_ID.xlsx")
     SQL_CONNECTION.close()
