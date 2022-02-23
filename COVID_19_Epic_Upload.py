@@ -17,7 +17,7 @@ print("Run start time: ", str(datetime.datetime.now()) + "\n")
 
 script_path = os.path.dirname(os.path.abspath( __file__ ))
 parent_path = os.path.abspath(os.path.join(script_path, '..'))
-comment_files = {"MCDC1RNA" : parent_path + "/COVID_19/Comments_CDC_Clinical_MCDC1RNA.txt", "MCDC1DIRECTPROT" : parent_path + "/COVID_19/Comments_CDC_Screening_MCDC1DIRECTPROT.txt"}
+comment_files = {"MCDC1RNA" : parent_path + "/COVID_19/Comments/Comments_CDC_Clinical_MCDC1RNA.txt", "MCDC1DIRECTPROT" : parent_path + "/COVID_19/Comments/Comments_CDC_Screening_MCDC1DIRECTPROT.txt"}
 
 CONFIG_FILE = parent_path +"/linux_gatorseq.config.yaml"
 config_dict=dict()
